@@ -1,0 +1,8 @@
+I thiiiink i am going to make the 'site' section into a react app.
+There is a lot of functionality i think would be better suited to having a redux store as opposed to storing info a global obejct that gets updated and then cascades down. Essentially... that is what redux would be doing for me, but instead of telling it to do the cascades manually it would be based on the store.
+	THAT BEING SAID. I HAAAAAATE the way it is implemented in MAG. Using the store is just such a fucking chore. Do 1 thing, add 14 functions... tedium and bullshit. There has to be a better way around doing it like that. Every time you want to save/use something you need like 2 actions and then an update to the reducer. I think that was just bad modellign on the side of the way the reducers work, and how we decided to run events. I'll think about it...
+	First thing is first for this though, an that is setting up an envronment for it.
+Features
+	Be able to input a list of items and get back an 'expected cost' of the items
+		Really thinking about groceries here, since i store them per line item i should be able to get a set of values for te cost (average, mean, something else, i could write something for a 'best guess', but then still give all)... this i actually the first REAL use case for this that would actually be super fucking usefull yissssssss
+		I did something similar with my monthly expenses before, i could re-add that and add a bit more logic to it to gauge my current finances. Similar idea just different parameters (essentially these are just 'comparisons', we then just have to tell it what assumptions it should make, and then feed it the data groups to compare)

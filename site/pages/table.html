@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Finances!!</title>
+
+    <!-- Bootstrap core CSS -->
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+	<script type="text/javascript">
+		var onloaders = [];
+		window.onload = () => {
+			onloaders.forEach((func) => {
+				func();
+			});
+		};
+	</script>
+
+    <!-- Custom styles for this template -->
+    <style>
+		body {
+		font-size: .875rem;
+		}
+
+		.feather {
+		width: 16px;
+		height: 16px;
+		vertical-align: text-bottom;
+		}
+
+		/*
+		* Sidebar
+		*/
+
+		.sidebar {
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 100; /* Behind the navbar */
+		padding: 0;
+		box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+		}
+
+		.sidebar-sticky {
+		position: -webkit-sticky;
+		position: sticky;
+		top: 48px; /* Height of navbar */
+		height: calc(100vh - 48px);
+		padding-top: .5rem;
+		overflow-x: hidden;
+		overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+		}
+
+		.sidebar .nav-link {
+		font-weight: 500;
+		color: #333;
+		}
+
+		.sidebar .nav-link .feather {
+		margin-right: 4px;
+		color: #999;
+		}
+
+		.sidebar .nav-link.active {
+		color: #007bff;
+		}
+
+		.sidebar .nav-link:hover .feather,
+		.sidebar .nav-link.active .feather {
+		color: inherit;
+		}
+
+		.sidebar-heading {
+		font-size: .75rem;
+		text-transform: uppercase;
+		}
+
+		/*
+		* Navbar
+		*/
+
+		.navbar-brand {
+		padding-top: .75rem;
+		padding-bottom: .75rem;
+		font-size: 1rem;
+		background-color: rgba(0, 0, 0, .25);
+		box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+		}
+
+		.navbar .form-control {
+		padding: .75rem 1rem;
+		border-width: 0;
+		border-radius: 0;
+		}
+
+		.form-control-dark {
+		color: #fff;
+		background-color: rgba(255, 255, 255, .1);
+		border-color: rgba(255, 255, 255, .1);
+		}
+
+		.form-control-dark:focus {
+		border-color: transparent;
+		box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+		}
+
+		/*
+		* Utilities
+		*/
+
+		.border-top { border-top: 1px solid #e5e5e5; }
+		.border-bottom { border-bottom: 1px solid #e5e5e5; }
+	</style>
+  </head>
+
+  <body>
+		<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+				<a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Company name</a>
+				<input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+				<ul class="navbar-nav px-3">
+				  <li class="nav-item text-nowrap">
+					<a class="nav-link" href="#">Sign out</a>
+				  </li>
+				</ul>
+			  </nav>
+		  
+			  <div class="container-fluid">
+				<div class="row">
+				  <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+					<div class="sidebar-sticky">
+					  <ul class="nav flex-column">
+						<li class="nav-item">
+						  <a class="nav-link active" href="#">
+							<span data-feather="home"></span>
+							Dashboard <span class="sr-only">(current)</span>
+						  </a>
+						</li>
+						<li class="nav-item">
+						  <a class="nav-link" href="#">
+							<span data-feather="file"></span>
+							Orders
+						  </a>
+						</li>
+						<li class="nav-item">
+						  <a class="nav-link" href="#">
+							<span data-feather="shopping-cart"></span>
+							Products
+						  </a>
+						</li>
+						<li class="nav-item">
+						  <a class="nav-link" href="#">
+							<span data-feather="users"></span>
+							Customers
+						  </a>
+						</li>
+						<li class="nav-item">
+						  <a class="nav-link" href="#">
+							<span data-feather="bar-chart-2"></span>
+							Reports
+						  </a>
+						</li>
+						<li class="nav-item">
+						  <a class="nav-link" href="#">
+							<span data-feather="layers"></span>
+							Integrations
+						  </a>
+						</li>
+					  </ul>
+		  
+					  <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+						<span>Current Groups</span>
+						<a class="d-flex align-items-center text-muted" href="#">
+						  <span data-feather="plus-circle" data-toggle="modal" data-target="#exampleModal"></span>
+						</a>
+					  </h6>
+					  <ul class="nav flex-column mb-2" id="current_groups">
+						<!-- <li class="nav-item" data-type="value" data-key="name" data-qualifier="null">
+						  <a class="nav-link" href="#">
+							<span data-feather="file-text"></span>
+							Name
+						  </a>
+						</li>
+						<li class="nav-item" data-type="array" data-key="categories" data-qualifier="all">
+						  <a class="nav-link" href="#">
+							<span data-feather="file-text"></span>
+							Categories
+						  </a>
+						</li> -->
+					  </ul>
+					</div>
+				  </nav>
+		  
+				  <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+					<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+					  <h1 class="h2">Dashboard</h1>
+					  <div class="btn-toolbar mb-2 mb-md-0">
+						<div class="btn-group mr-2">
+						  <button class="btn btn-sm btn-outline-secondary">Share</button>
+						  <button class="btn btn-sm btn-outline-secondary">Export</button>
+						</div>
+						<button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+						  <span data-feather="calendar"></span>
+						  This week
+						</button>
+					  </div>
+					</div>
+					
+					<h2>Stats:</h2>
+					<div>Stuff</div>
+
+					<h2>Section title</h2>
+					<div class="table-responsive">
+					  <table class="table table-striped table-sm" id="thetable">
+						<thead>
+						 
+						</thead>
+						<tbody>
+						 
+						</tbody>
+					  </table>
+					</div>
+				  </main>
+				</div>
+			  </div>
+
+	<div class="modal" tabindex="-1" role="dialog" id="exampleModal">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Add Group</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<label><input type="radio" value="['value','name',null]" name="newgroup" /> Name </label><br />
+				<label><input type="radio" value="['array','categories','all']" name="newgroup" /> Categories (Joined)</label><br />
+				<label><input type="radio" value="['array','categories',null]" name="newgroup" /> Categories (Separate)</label><br />
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" onClick="$$.addGroup();">Save changes</button>
+			</div>
+			</div>
+		</div>
+	</div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	
+
+	<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+    <script>
+      feather.replace()
+	</script>
+
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+	<script type="text/javascript">!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.sst=t():e.sst=t()}(this,function(){return function(e){var t={};function n(o){if(t[o])return t[o].exports;var r=t[o]={i:o,l:!1,exports:{}};return e[o].call(r.exports,r,r.exports,n),r.l=!0,r.exports}return n.m=e,n.c=t,n.d=function(e,t,o){n.o(e,t)||Object.defineProperty(e,t,{configurable:!1,enumerable:!0,get:o})},n.r=function(e){Object.defineProperty(e,"__esModule",{value:!0})},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="",n(n.s=0)}([function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.default=function(e,t,n){var o,r,c,u,d,a=(o=t,r=document.createElement("thead"),c=document.createElement("tr"),o.forEach(function(e){var t=document.createElement("th");t.innerHTML=e,c.appendChild(t)}),r.appendChild(c),r),i=(u=n,d=document.createElement("tbody"),u.forEach(function(e){var t=document.createElement("tr");e.forEach(function(e){var n=document.createElement("td");n.innerHTML=e,t.appendChild(n)}),d.appendChild(t)}),d);e.innerHTML="",e.appendChild(a),e.appendChild(i),console.log("Jay Hates You"),console.log(t,n)},e.exports=t.default}])});</script>
+
+	<script src="https://unpkg.com/mathjs@4.1.1/dist/math.min.js"></script>
+
+	<script type="text/javascript" src="/tools/DataGroupifier.js"></script>
+
+	<script type="text/javascript" src="/scripts/table.js"></script>
+
+
+	</body>
+</html>

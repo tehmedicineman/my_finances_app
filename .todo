@@ -1,0 +1,24 @@
+api
+	block writes to only authorized users
+		probably going to authorize via a field... my idea for an auto-fill chrome field feels right since i can easily do stuff from my phone
+site
+	:general:
+		create app to manage 'finance' data once we get it, i only want to run data loads intermittently
+			:source -- this is where the data loaded from ::load() is stored so it can be used elsewhere (data is immutable, requires being re-loaded otherwise)
+			::load() -- hits the server to pull back everything
+			::group(grouping) -- grouping determines how to split the data (ex: name, categories), data source is the main source, returns grouped data
+			::filter(filter, data) -- filters data passed into based on filter passed, data source is passed in, returns filtered data
+	:page:listing
+		displays the financial data in a tabular format
+		by default displays everything, can be grouped or filtered from here to change what is in the table
+	:page:stats
+		displays stats and comparison data
+		by default doesn't display anything (there is no 0 state wihtout input)
+		when given a group to source by it will then take all members grouped and run different comparison functionality on them
+			ex: group by date::month will give you stats per month with comparisons
+			ex: group by name will give you stats on each item recorded with comparisons
+	:page:predict
+		displays a set of predictions based on inserted data
+		by default doesn't display anything (there is no 0 state without input)
+		when given an input it will take all 'knowable' groups and run predictions
+			ex: given a name of 'Yogurt' will go through and predict cost per item, cost per month, frequency->next purchase time... etc, not sure on all this yet, its a work in progress

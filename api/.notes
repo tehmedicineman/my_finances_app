@@ -1,0 +1,6 @@
+idea for 'sudo-authentication'
+	for posting it requires having a 'key' field
+	key will just be a simple alpha numeric string (doesnt entirely matter because you know... no ssl and such)
+	api will then match that string
+	also, instead of making the string easy to type on a phone, i'm thinking i can just use chrome to auto fill
+		i wanna see if i can look into having chrom auto-fill a field that is hidden, or something, so it won't even show up on the form... obfuscation whooo
