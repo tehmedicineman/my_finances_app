@@ -1,10 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import App from './components/App.js';
 
-const title = 'YER A SKELETON, CLINKZ';
+const title = 'YER A SKELETON, CLINKZs';
 
 ReactDOM.render(
-	<div>{title}</div>,
+	<App />,
 	document.getElementById('app')
 );
 

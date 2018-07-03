@@ -1,6 +1,7 @@
 const router = require('express').Router();
 var passport = require('passport');
 const {ObjectID} = require('mongodb');
+var isValid = require('date-fns/is_valid');
 
 const {entry} = require('../apps/finances');
 
@@ -28,19 +29,21 @@ router.get('/:id', (request, response) => {
 	});
 });
 
-router.get('/month/:month/:year?', (request, response) => {
-	let month = parseInt(request.params.month) - 1;
-	let year = parseInt(request.params.year) || new Date().getFullYear();
+router.get('/between/:start/:end', (request, response) => {
+	let start = new Date(request.params.start + " 00:00:00");
+	let end = new Date(request.params.end + " 00:00:00");
 
-	if(typeof month !== 'number' || month < 0 || month > 11) return response.status(404).send({'error': "Not a valid month.", month});
-	if(typeof year !== 'number') return response.status(404).send({'error': "Not a valid year.", year});
+	if(start == 'Invalid Date') return response.status(404).send({'error': "Not a valid start date."});
+	if(end == 'Invalid Date') return response.status(404).send({'error': "Not a valid end date."});
 
-	entry.find().by_month(month,year).then((docs) => {
+	entry.find().between(start, end).then((docs) => {
 		if(!docs) return response.status(404).send();
 
 		response.send({
 			total: docs.length,
-			entries: docs
+			entries: docs,
+			derp: (parseInt(request.params.month) - 1),
+			month: new Date().getMonth()
 		});
 	});
 });
@@ -62,6 +65,44 @@ router.get('/filter/:has/:has_not?', (request, response) => {
 	});
 });
 
+router.get('/name/:name', (request, response) => {
+	let name = request.params.name || false;
+
+	if(!name) return response.status(404).send({'error': "Name argument required."});
+
+	entry.find().by_name(name).then((docs) => {
+		if(!docs) return response.status(404).send();
+
+		response.send({
+			total: docs.length,
+			entries: docs
+		});
+	});
+});
+
+router.post('/query', (request, response) => {
+	let name = request.body.name;
+	let categories = {
+		has: request.body.has,
+		has_not: request.body.has_not
+	};
+	let between = {
+		start: request.body.start,
+		end: request.body.end
+	};
+
+	if(!name && !categories.has && !categories.has_not && !between.start && !between.end) return response.status(404).send({'error': "Query request requires atleast 1 valid parameter."});
+
+	entry.find().fullQuery(name, categories, between).then((docs) => {
+		if(!docs) return response.status(404).send();
+
+		response.send({
+			total: docs.length,
+			entries: docs
+		});
+	});
+});
+
 router.post('/', (request, response) => {
 	var data = {
 		name: request.body.name,
@@ -70,7 +111,6 @@ router.post('/', (request, response) => {
 		categories: request.body.categories
 	};
 
-	console.log(request.body);
 	var item = new entry(data);
 
 	item.save().then((doc) => {
