@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 
 //-- libraries and such
-	require('jquery');
+	const $ = require('jquery');
 	require('bootstrap');
 	require('mathjs');
 	const feather = require('feather-icons');
@@ -45,6 +45,7 @@ class App extends React.Component {
 		this.changeModal = this.changeModal.bind(this);
 		this.updateAndOpen = this.updateAndOpen.bind(this);
 		this.modalClose = this.modalClose.bind(this);
+		this.modalSave = this.modalSave.bind(this);
 
 		this.sortBy = this.sortBy.bind(this);
 
@@ -92,8 +93,14 @@ class App extends React.Component {
 	}
 
 	componentDidUpdate(){
+		console.log('waaaat',this.state.modal_open);
 		if(this.state.modal_open) OpenModal("kjalsdkjalsdjalsdkj");
-		else CloseModal("kjalsdkjalsdjalsdkj");
+		// else CloseModal("kjalsdkjalsdjalsdkj");
+	}
+
+	componentWillUpdate(){
+		console.log('gonna do stuff', this.state.modal_open);
+		if(!this.state.modal_open) CloseModal("kjalsdkjalsdjalsdkj");
 	}
 
 	updateAndOpen(element){
@@ -103,7 +110,13 @@ class App extends React.Component {
 	}
 
 	modalClose(){
-		this.setState({modal_open: false})
+		this.setState({modal_open: false});
+	}
+
+	modalSave(params){
+		// this.updateQuery(params);
+		// CloseModal("kjalsdkjalsdjalsdkj");
+		this.setState(Object.assign(params,{modal_open: false}));
 	}
 
 	sortBy(sortFunc){
@@ -131,9 +144,14 @@ class App extends React.Component {
 				</MainContent>
 
 				{this.state.modal_open ? 
-					<ChangeFiltersModal query={this.state.query} modalId="kjalsdkjalsdjalsdkj" modalClose={this.modalClose}>
-
-					</ChangeFiltersModal>
+					<ChangeFiltersModal
+						query={this.state.query}
+						modalId="kjalsdkjalsdjalsdkj"
+						modalClose={this.modalClose}
+						actionPhrase="Update Filter"
+						action={this.modalSave}
+						title="Update Search Filter"
+					/>
 				: ''}
 				
 			</div>

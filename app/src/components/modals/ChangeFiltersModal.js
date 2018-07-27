@@ -21,25 +21,33 @@ class ChangeFiltersModal extends React.Component {
 			end: this.props.query.between.end
 		}
 
+		this.date_format = "YYYY-MM-DD";
+
 		this.handleChange = this.handleChange.bind(this);
+		this.handleSave = this.handleSave.bind(this);
 	}
 
 	componentDidMount(){
 		/* Need to add a hook onto the bootstrap-modal to update our main state so we can toggle the elements existence */
 			$('#kjalsdkjalsdjalsdkj').on('hide.bs.modal',() => {
-				console.log(this);
 				this.props.modalClose();
 			});
 	}
 
 	handleChange(new_date, which){
 		let update = {};
-			update[which] = new_date;
+			update[which] = new_date.format(this.date_format);
 		this.setState(update);
 	}
 
 	handleSave(){
-		console.log(this.state.start, this.state.end);
+		let new_query = {
+			between: {
+				start: this.state.start,
+				end: this.state.end
+			}
+		}
+		this.props.action(new_query);
 	}
 
 	render() {
@@ -66,7 +74,7 @@ class ChangeFiltersModal extends React.Component {
 						/>
 					</div>
 					<div className="modal-footer">
-						<button type="button" className="btn btn-primary">{this.props.actionPhrase}</button>
+						<button type="button" className="btn btn-primary" onClick={this.handleSave}>{this.props.actionPhrase}</button>
 					</div>
 					</div>
 				</div>
