@@ -1,6 +1,11 @@
 const axios = require('axios');
 import api from './config';
 
+export function everything(){
+
+	return axios(api.url);	
+}
+
 export function getByCategories(has, has_not){
 	if(typeof has_not === 'undefined') has_not = [];
 
@@ -23,8 +28,8 @@ export function getByName(name){
 	return axios(api.url + uri);	
 }
 
-export function fullQuery(name){
-	let uri = "name/" + name;
+export function fullQuery(params){
+	let uri = "query";
 
-	return axios(api.url + uri);	
+	return axios.post(api.url + uri, params);	
 }

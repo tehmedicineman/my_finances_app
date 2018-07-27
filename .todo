@@ -1,3 +1,15 @@
+Libraries to build
+	Loki.js Interface
+		Why use Loki.js?
+			I don't want to have to use the api every time i ever change what data i am looking at on the page. Reaslisticaly i should be loading the data on load, then maybe pinging for updates on either actions or intervals. Also, i should probably figure out a good batching scheme to not load in ALL data at once, but maybe on a broad query basis (or some shit... not positive, hence 'figure out')
+		Why do i need an interface
+			The interactions with Loki.js is... convoluted. Yes it is wide open and available to do the shit you need, but because of that doing repetative things, or direct things, is way too complex to work within INSIDE of an app. I need to build out simple to access functions to steamline useage. Examples: Querying shit, i would like a decent syntax to use to access this. Syncing data, since i am not tieing to a loki.js backend this means i have to merge the stuff, which last time i tried this wasn't all that easy to figure out, essentially a tie in to the data schema that i don't need to pass in/reference every time. Their concept of 'database' and 'collection' feels different than monogodbs useage... hopefully it is less than i think it is, but who knows, last time i played with loki i had no experience with any other nosql db.
+
+
+UI Stuff
+	Need to implement some kind of calendar input... hard to find one that doesn't rely on shit i don't want to add ugh
+		
+	
 api
 	block writes to only authorized users
 		probably going to authorize via a field... my idea for an auto-fill chrome field feels right since i can easily do stuff from my phone

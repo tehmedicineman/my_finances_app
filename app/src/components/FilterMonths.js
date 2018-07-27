@@ -1,13 +1,12 @@
 import React, { PropTypes } from 'react';
 
+import SideNavGroup from './layout/SideNavGroup';
 import SideNavItem from './layout/SideNavItem';
 
 var formatDate = require('date-fns/format');
 var subMonths = require('date-fns/sub_months');
 var endOfMonth = require('date-fns/end_of_month');
 var startOfMonth = require('date-fns/start_of_month');
-var endOfDay = require('date-fns/end_of_day');
-var startOfDay = require('date-fns/start_of_day');
 
 class FilterMonths extends React.Component {
 	constructor(props, context) {
@@ -36,20 +35,21 @@ class FilterMonths extends React.Component {
 	}
 
 	renderItem(current){
-		return <SideNavItem feather="layers" href="#" action={() => this.props.filter(formatDate(current,this.date_format), formatDate(endOfMonth(current),this.date_format),formatDate(current,this.month_display))}>{formatDate(endOfMonth(current),this.month_format)}</SideNavItem>
+		let query = {
+			between: {
+				start: formatDate(current,this.date_format),
+				end: formatDate(endOfMonth(current),this.date_format), 
+			}
+		};
+		//formatDate(current,this.month_display)
+		return <SideNavItem feather="layers" href="#" action={() => this.props.filter(query)}>{formatDate(endOfMonth(current),this.month_format)}</SideNavItem>
 	}
 
 	render() {
 		return (
-			<div style={{"display": "inline"}}>
-				<h6 className="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-					<span>Filter By Months</span>
-					<a className="d-flex align-items-center text-muted" href="#">
-					<span data-feather="plus-circle" data-toggle="modal" data-target="#exampleModal"></span>
-					</a>
-				</h6>
+			<SideNavGroup title="Filter By Month" modalId={this.props.modalId}>
 				{this.pastSixMonths()}
-			</div>
+			</SideNavGroup>
 		);
 	}
 }

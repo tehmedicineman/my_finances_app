@@ -5,17 +5,18 @@ import React, { PropTypes } from 'react';
 	require('bootstrap');
 	require('mathjs');
 	const feather = require('feather-icons');
-	const axios = require('axios');
 	const financesAPI = require('../api/finances');
+	import ldb from '../libraries/LDB';
+	import {ModalId, OpenModal, CloseModal} from '~/helpers/Modal';
 
 //-- components
 	import SideNav from './layout/SideNav';
 	import SideNavGroup from './layout/SideNavGroup';
 	import SideNavItem from './layout/SideNavItem';
 	import MainContent from './layout/MainContent';
-	import MainSection from './layout/MainSection';
-	import TransactionTable from './TransactionTable';
+	import ChangeFiltersModal from '~/components/modals/ChangeFiltersModal';
 	import FilterMonths from './FilterMonths';
+	import FilterByDate from './FilterByDate';
 	import TranasctionListSection from './TranasctionListSection';
 
 //-- libraries
@@ -25,45 +26,84 @@ class App extends React.Component {
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
-			lists: [],
-			queries: []
+			source: [],
+			query: {
+				name: false,
+				between: {
+					start: false,
+					end: false
+				},
+				include_categories: false,
+				exclude_categories: false
+			},
+			modal_open: false
 		};
 
 		this.fillData = this.fillData.bind(this);
-		this.addData = this.addData.bind(this);
-		this.getBetween = this.getBetween.bind(this);
+		this.updateQuery = this.updateQuery.bind(this);
+		this.setQuery = this.setQuery.bind(this);
+		this.changeModal = this.changeModal.bind(this);
+		this.updateAndOpen = this.updateAndOpen.bind(this);
+		this.modalClose = this.modalClose.bind(this);
+
 		this.sortBy = this.sortBy.bind(this);
-		this.addList = this.addList.bind(this);
 
-		financesAPI.getByCategories(['Groceries']).then(this.fillData)
+		this.entriesdb = new ldb();
+
+		financesAPI.everything().then(response => {
+			let new_data = response.data.entries;
+			this.entriesdb.LoadAll(new_data);
+			this.fillData(this.entriesdb.GetByQuery());
+		})
 	}
 
-	addList(query){
-		financesAPI.getByName(query.name).then(this.addData);
+	changeModal(new_modal){
+		this.setState({modal_content: new_modal});
 	}
 
-	addData(response){
-		let new_data = response.data.entries;
-		let lists = Object.assign([],this.state.lists);
-		lists.push(new_data);
-
-		this.setState({lists});
+	fillData(new_data){
+		this.setState({source: new_data});
 	}
 
-	fillData(response){
-		let new_data = response.data.entries;
-		this.setState({lists: [new_data]});
+	updateQuery(params){
+		let newParams = Object.assign({},this.state.query,params);
+		this.setState({query: newParams});
 	}
 
-	getBetween(start, end, title){
-		financesAPI.getBetween(start,end).then(this.fillData);
-		// .then(() => {
-		// 	this.setState({current_view: title});
-		// });
+	setQuery(params){
+		let newParams = Object.assign({}, params);
+		this.setState({query: newParams});
+	}
+
+	getName(name){
+		let query = { name };
+
+		this.fillData(this.entriesdb.GetByQuery(query));
+	}
+
+	getCategories(has, has_not){
+		let query = { categories: { has, has_not } };
+
+		this.fillData(this.entriesdb.GetByQuery(query));
 	}
 
 	componentDidMount(){
 		if(typeof feather !== 'undefined') feather.replace();
+	}
+
+	componentDidUpdate(){
+		if(this.state.modal_open) OpenModal("kjalsdkjalsdjalsdkj");
+		else CloseModal("kjalsdkjalsdjalsdkj");
+	}
+
+	updateAndOpen(element){
+		// console.log('stupid react being smart and shit',element);
+		// this.setState({modal_content: element});
+		this.setState({modal_open: true});
+	}
+
+	modalClose(){
+		this.setState({modal_open: false})
 	}
 
 	sortBy(sortFunc){
@@ -76,21 +116,36 @@ class App extends React.Component {
 		return (
 			<div className="row">
 				<SideNav>
-					<FilterMonths filter={this.getBetween} />
+					<FilterMonths filter={this.updateQuery} modalId={ModalId} />
+					<FilterByDate filter={this.updateQuery} modalId={"kjalsdkjalsdjalsdkj"} start={this.state.query.between.start} end={this.state.query.between.end} addAction={this.updateAndOpen} />
+					<SideNavGroup title="Random Shit" addNew={this.changeModal}>
+						<SideNavItem feather="layers" href="#" action={() => this.updateQuery({name: 'Coffee'})}>Only Coffee</SideNavItem>
+						<SideNavItem feather="layers" href="#" action={() => this.updateQuery({ include_categories: ['Groceries'] })}>Only Groceries</SideNavItem>
+						<SideNavItem feather="layers" href="#" action={() => this.updateQuery({ exclude_categories: ['Extra'] } )}>Remove Extra</SideNavItem>
+						<SideNavItem feather="layers" href="#" action={() => this.updateQuery({ exclude_categories: false } )}>Return Extra</SideNavItem>
+					</SideNavGroup>
 				</SideNav>
 
 				<MainContent title={"Finances"}>
-					{
-						this.state.lists.map((list, listNum) => {
-							console.log('derp',list);
-							return <TranasctionListSection key={"tls-"+listNum} title={"Grawr"} list={list} onChoose={this.addList} />
-						})
-					}
+					<TranasctionListSection title={"Grawr"} list={this.entriesdb.GetByQuery(this.state.query)} />
 				</MainContent>
+
+				{this.state.modal_open ? 
+					<ChangeFiltersModal query={this.state.query} modalId="kjalsdkjalsdjalsdkj" modalClose={this.modalClose}>
+
+					</ChangeFiltersModal>
+				: ''}
+				
 			</div>
 		);
 	}
 }
+/*
+
+<label><input type="radio" value="['value','name',null]" name="newgroup" /> Name </label><br />
+					<label><input type="radio" value="['array','categories','all']" name="newgroup" /> Categories (Joined)</label><br />
+					<label><input type="radio" value="['array','categories',null]" name="newgroup" /> Categories (Separate)</label><br />
+					*/
 
 /*
 	<MainSection className="col-12 col-sm-6">

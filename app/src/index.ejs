@@ -132,27 +132,6 @@
 			
 		</div>
 
-	<div class="modal" tabindex="-1" role="dialog" id="exampleModal">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Add Group</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<label><input type="radio" value="['value','name',null]" name="newgroup" /> Name </label><br />
-				<label><input type="radio" value="['array','categories','all']" name="newgroup" /> Categories (Joined)</label><br />
-				<label><input type="radio" value="['array','categories',null]" name="newgroup" /> Categories (Separate)</label><br />
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-primary" onClick="$$.addGroup();">Save changes</button>
-			</div>
-			</div>
-		</div>
-	</div>
-
 	<script type="text/javascript">!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.sst=t():e.sst=t()}(this,function(){return function(e){var t={};function n(o){if(t[o])return t[o].exports;var r=t[o]={i:o,l:!1,exports:{}};return e[o].call(r.exports,r,r.exports,n),r.l=!0,r.exports}return n.m=e,n.c=t,n.d=function(e,t,o){n.o(e,t)||Object.defineProperty(e,t,{configurable:!1,enumerable:!0,get:o})},n.r=function(e){Object.defineProperty(e,"__esModule",{value:!0})},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="",n(n.s=0)}([function(e,t,n){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.default=function(e,t,n){var o,r,c,u,d,a=(o=t,r=document.createElement("thead"),c=document.createElement("tr"),o.forEach(function(e){var t=document.createElement("th");t.innerHTML=e,c.appendChild(t)}),r.appendChild(c),r),i=(u=n,d=document.createElement("tbody"),u.forEach(function(e){var t=document.createElement("tr");e.forEach(function(e){var n=document.createElement("td");n.innerHTML=e,t.appendChild(n)}),d.appendChild(t)}),d);e.innerHTML="",e.appendChild(a),e.appendChild(i),console.log("Jay Hates You"),console.log(t,n)},e.exports=t.default}])});</script>
 
 	<script src="https://unpkg.com/mathjs@4.1.1/dist/math.min.js"></script>

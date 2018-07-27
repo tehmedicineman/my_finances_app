@@ -8,7 +8,6 @@ class TranasctionListSection extends React.Component {
 	constructor(props, context) {
 		super(props, context);
 		
-		console.log(this.props);
 		this.state = {
 			current_data: this.props.list,
 			current_total: 0

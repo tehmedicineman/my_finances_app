@@ -3,5 +3,10 @@
 		"env",
 		"react",
 		"stage-2"
+	],
+	"plugins": [
+		["babel-plugin-root-import",{
+			"rootPathSuffix": "src"
+		}]
 	]
 }
