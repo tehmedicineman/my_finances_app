@@ -1,6 +1,6 @@
 var $ = require('jquery');
 
-export const ModalId = 'superawesomemodalkey';
+export const modal_id = 'superawesomemodalkey';
 
 export function OpenModal(derp){
 	$('#'+derp).modal('show');
@@ -11,5 +11,5 @@ export function CloseModal(derp){
 }
 
 export function ToggleModal(){
-	$('#'+ModalId).modal('toggle');
+	$('#'+modal_id).modal('toggle');
 }

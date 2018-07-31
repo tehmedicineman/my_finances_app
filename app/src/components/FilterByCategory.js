@@ -7,9 +7,9 @@ import SideNavGroup from './layout/SideNavGroup';
 var formatDate = require('date-fns/format');
 
 //-- config
-	import {date_display} from '~/config/dates';
+import {date_display} from '~/config/dates';
 
-class FilterByDate extends React.Component {
+class FilterByCategory extends React.Component {
 	constructor(props, context) {
 		super(props, context);
 
@@ -21,8 +21,8 @@ class FilterByDate extends React.Component {
 			<ul className="nav flex-column">
 				<If condition={this.props.start !== false && this.props.end !== false}>
 					<Then>{() => <span> 
-						<SideNavItem feather="layers" href="#"><b>Start:</b> {formatDate(this.props.start,date_display)}</SideNavItem>
-						<SideNavItem feather="layers" href="#"><b>End:</b> {formatDate(this.props.end,date_display)}</SideNavItem>
+						<SideNavItem feather="layers" href="#" action={() => this.props.filter(query)}><b>Start:</b> {formatDate(this.props.start,date_display)}</SideNavItem>
+						<SideNavItem feather="layers" href="#" action={() => this.props.filter(query)}><b>End:</b> {formatDate(this.props.end,date_display)}</SideNavItem>
 					</span>}</Then>
 				</If>
 			</ul>
@@ -38,6 +38,6 @@ class FilterByDate extends React.Component {
 	}
 }
 
-// FilterByDate.propTypes = {};
+// FilterByCategory.propTypes = {};
 
-export default FilterByDate;
+export default FilterByCategory;

@@ -7,7 +7,7 @@ import React, { PropTypes } from 'react';
 	const feather = require('feather-icons');
 	const financesAPI = require('../api/finances');
 	import ldb from '../libraries/LDB';
-	import {ModalId, OpenModal, CloseModal} from '~/helpers/Modal';
+	import {modal_id, OpenModal, CloseModal} from '~/helpers/Modal';
 
 //-- components
 	import SideNav from './layout/SideNav';
@@ -15,12 +15,17 @@ import React, { PropTypes } from 'react';
 	import SideNavItem from './layout/SideNavItem';
 	import MainContent from './layout/MainContent';
 	import ChangeFiltersModal from '~/components/modals/ChangeFiltersModal';
-	import FilterMonths from './FilterMonths';
 	import FilterByDate from './FilterByDate';
 	import TranasctionListSection from './TranasctionListSection';
 
 //-- libraries
 	// import DataGroupifier from './libraries/DataGroupifier.js'
+	var formatDate = require('date-fns/format');
+	var startOfMonth = require('date-fns/start_of_month');
+	var endOfMonth = require('date-fns/end_of_month');
+
+//-- config
+	import {date_format} from '~/config/dates';
 
 class App extends React.Component {
 	constructor(props, context) {
@@ -30,24 +35,22 @@ class App extends React.Component {
 			query: {
 				name: false,
 				between: {
-					start: false,
-					end: false
+					start: formatDate(startOfMonth(new Date()), date_format),
+					end: formatDate(endOfMonth(new Date()), date_format)
 				},
 				include_categories: false,
 				exclude_categories: false
 			},
-			modal_open: false
+			modal_exists: false
 		};
 
 		this.fillData = this.fillData.bind(this);
 		this.updateQuery = this.updateQuery.bind(this);
 		this.setQuery = this.setQuery.bind(this);
-		this.changeModal = this.changeModal.bind(this);
-		this.updateAndOpen = this.updateAndOpen.bind(this);
+		this.createModal = this.createModal.bind(this);
+		this.destroyModal = this.destroyModal.bind(this);
 		this.modalClose = this.modalClose.bind(this);
 		this.modalSave = this.modalSave.bind(this);
-
-		this.sortBy = this.sortBy.bind(this);
 
 		this.entriesdb = new ldb();
 
@@ -56,10 +59,6 @@ class App extends React.Component {
 			this.entriesdb.LoadAll(new_data);
 			this.fillData(this.entriesdb.GetByQuery());
 		})
-	}
-
-	changeModal(new_modal){
-		this.setState({modal_content: new_modal});
 	}
 
 	fillData(new_data){
@@ -93,45 +92,33 @@ class App extends React.Component {
 	}
 
 	componentDidUpdate(){
-		console.log('waaaat',this.state.modal_open);
-		if(this.state.modal_open) OpenModal("kjalsdkjalsdjalsdkj");
-		// else CloseModal("kjalsdkjalsdjalsdkj");
+		console.log('waaaat',this.state.modal_exists);
+		if(this.state.modal_exists) OpenModal("kjalsdkjalsdjalsdkj");
 	}
 
-	componentWillUpdate(){
-		console.log('gonna do stuff', this.state.modal_open);
-		if(!this.state.modal_open) CloseModal("kjalsdkjalsdjalsdkj");
+	createModal(){
+		this.setState({modal_exists: true});
 	}
 
-	updateAndOpen(element){
-		// console.log('stupid react being smart and shit',element);
-		// this.setState({modal_content: element});
-		this.setState({modal_open: true});
+	destroyModal(){
+		this.setState({modal_exists: false});
 	}
 
-	modalClose(){
-		this.setState({modal_open: false});
+	modalClose(modal_id){
+		CloseModal(modal_id);
 	}
 
-	modalSave(params){
-		// this.updateQuery(params);
-		// CloseModal("kjalsdkjalsdjalsdkj");
-		this.setState(Object.assign(params,{modal_open: false}));
-	}
-
-	sortBy(sortFunc){
-		let sorted = this.state.current_data;
-		sorted = sorted.sort(sortFunc);
-		this.setState({current_data: sorted});
+	modalSave(params, modal_id){
+		this.modalClose(modal_id);
+		this.setState({query: params});
 	}
 
 	render() {
 		return (
 			<div className="row">
 				<SideNav>
-					<FilterMonths filter={this.updateQuery} modalId={ModalId} />
-					<FilterByDate filter={this.updateQuery} modalId={"kjalsdkjalsdjalsdkj"} start={this.state.query.between.start} end={this.state.query.between.end} addAction={this.updateAndOpen} />
-					<SideNavGroup title="Random Shit" addNew={this.changeModal}>
+					<FilterByDate filter={this.updateQuery} modal_id={"kjalsdkjalsdjalsdkj"} start={this.state.query.between.start} end={this.state.query.between.end} addAction={this.createModal} />
+					<SideNavGroup title="Random Shit">
 						<SideNavItem feather="layers" href="#" action={() => this.updateQuery({name: 'Coffee'})}>Only Coffee</SideNavItem>
 						<SideNavItem feather="layers" href="#" action={() => this.updateQuery({ include_categories: ['Groceries'] })}>Only Groceries</SideNavItem>
 						<SideNavItem feather="layers" href="#" action={() => this.updateQuery({ exclude_categories: ['Extra'] } )}>Remove Extra</SideNavItem>
@@ -143,10 +130,11 @@ class App extends React.Component {
 					<TranasctionListSection title={"Grawr"} list={this.entriesdb.GetByQuery(this.state.query)} />
 				</MainContent>
 
-				{this.state.modal_open ? 
+				{this.state.modal_exists ? 
 					<ChangeFiltersModal
 						query={this.state.query}
-						modalId="kjalsdkjalsdjalsdkj"
+						modal_id="kjalsdkjalsdjalsdkj"
+						onClose={this.destroyModal}
 						modalClose={this.modalClose}
 						actionPhrase="Update Filter"
 						action={this.modalSave}
