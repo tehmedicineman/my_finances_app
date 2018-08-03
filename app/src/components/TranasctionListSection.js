@@ -32,7 +32,7 @@ class TranasctionListSection extends React.Component {
 	render() {
 		return (
 			<MainSection className="col">
-				<div className="h4">{this.props.title} <span style={{"fontSize": ".7em", "opacity": ".7"}}>(${this.findTotal(this.props.list)})</span></div>
+				<div className="h4">{this.props.title()} <span style={{"fontSize": ".7em", "opacity": ".7"}}>(${this.findTotal(this.props.list)})</span></div>
 				<TransactionTable data={this.props.list} onChoose={this.props.onChoose} />
 			</MainSection>
 		);

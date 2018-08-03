@@ -1,0 +1,11 @@
+.hover-okay, .hover-not-okay{
+	cursor: pointer;
+}
+
+.hover-okay:hover{
+	color: green !important;
+}
+
+.hover-not-okay:hover{
+	color: red !important;
+}

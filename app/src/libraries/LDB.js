@@ -1,5 +1,7 @@
 const loki = require('lokijs');
 
+var formatDate = require('date-fns/format');
+
 class FinanceLDB{
 
 	constructor(data){
@@ -34,8 +36,17 @@ class FinanceLDB{
 			query.find({ 'categories': { '$containsNone': params.exclude_categories} });
 
 		if(typeof params.between !== 'undefined' && (params.between.start && params.between.end)){
-			query.find({'date_of': { '$between': [params.between.start, params.between.end] }});
+			let start = formatDate(params.between.start);
+			let end = formatDate(params.between.end);
+			query.find({'date_of': { '$between': [start, end] }});
 		}
+
+		if(typeof params.sort !== 'undefined'){
+			query.compoundsort('date_of');
+		}else{
+			query.simplesort('date_of');
+		}
+
 
 		return query.data();
 	}

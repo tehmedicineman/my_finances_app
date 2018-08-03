@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 
-class SideNavGroup extends React.Component {
+class SideNavItem extends React.Component {
 	constructor(props, context) {
 		super(props, context);
 	}
@@ -8,15 +8,28 @@ class SideNavGroup extends React.Component {
 	render() {
 		return (
 			<li className="nav-item">
-				<a className="nav-link" href={this.props.href} onClick={this.props.action}>
-				<span data-feather={this.props.feather}></span>
-				{this.props.children}
-				</a>
+				<MaybeLink href={this.props.href} action={this.props.action}>
+					<span data-feather={this.props.feather}></span>
+					{this.props.children}
+				</MaybeLink>
 			</li>
 		);
 	}
 }
 
-// SideNavGroup.propTypes = {};
+const MaybeLink = function(props){
+	if(props.href){
+		return <a className="nav-link" href={props.href} onClick={props.action}>{props.children}</a>;
+	}
 
-export default SideNavGroup;
+	return <span className="nav-link" onClick={props.action ? props.action : () => {}} style={props.action ? {cursor: 'pointer'} : {}}>{props.children}</span>;
+}
+
+// SideNavItem.propTypes = {};
+
+SideNavItem.defaultProps = {
+	href: false,
+	action: false
+};
+
+export default SideNavItem;
