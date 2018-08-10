@@ -42,6 +42,7 @@
     "react-feather": "^1.1.1",
     "react-if": "^2.2.2",
     "react-motion": "^0.5.2",
+    "react-select": "^2.0.0",
     "style-loader": "^0.21.0"
   }
 }

@@ -1,7 +1,10 @@
 Stuff
-	Figure out title
-	work in Categories to the filter
-	next shooould be to figure out the other 'types', for now that is 'statistics'
+	Add the ability to change sort order
+	Categories WindowPane
+		i think i might re-think the design, a table doesn't not fit... but it doesn't really mak the most of sense
+	remove filters that refer to the 'global' filtering i was using before
+		left panel
+		right dropdown
 
 
 api

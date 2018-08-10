@@ -18,6 +18,10 @@ class FinanceLDB{
 		return this.entries.by('_id', id);
 	}
 
+	GetAll(){
+		return this.entries.chain().data();
+	}
+
 	GetByQuery(params){
 		if(typeof params === 'undefined') params = {};
 		let query = this.entries.chain();

@@ -17,7 +17,6 @@ import React, { PropTypes } from 'react';
 	import SideNavItem from './layout/SideNavItem';
 	import MainContent from './layout/MainContent';
 	import SideNavFilters from './SideNavFilters';
-	import TranasctionListSection from './TranasctionListSection';
 
 //-- libraries
 	var formatDate = require('date-fns/format');
@@ -163,21 +162,6 @@ class App extends React.Component {
 		);
 	}
 }
-
-/*
-	<TranasctionListSection title={() => {
-		let startMonth = formatDate(this.state.query.between.start,"MMMM");
-		let endMonth = formatDate(this.state.query.between.end,"MMMM");
-	
-		console.log(startMonth,endMonth);
-		let title = startMonth;
-
-		if(endMonth != startMonth)
-			title += " - " + endMonth;
-
-		return title;
-	}} list={this.entriesdb.GetByQuery(this.state.query)} />
-*/
 
 // App.propTypes = {};
 

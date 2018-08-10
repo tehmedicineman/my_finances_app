@@ -7,6 +7,7 @@ import XCircle from 'react-feather/dist/icons/x-circle';
 
 //-- components
 	import TransactionTable from '~/components/TransactionTable';
+	import CategoryTable from '~/components/CategoryTable';
 	import WindowConfig from '~/components/WindowConfig';
 
 //-- libraries
@@ -29,7 +30,6 @@ class WindowPane extends React.Component {
 				include_categories: false,
 				exclude_categories: false
 			},
-			total: 0,
 			output: "list",
 			editing: false
 		};
@@ -39,9 +39,15 @@ class WindowPane extends React.Component {
 		this.updateQuery = this.updateQuery.bind(this);
 		this.getTotal = this.getTotal.bind(this);
 		this.getTitle = this.getTitle.bind(this);
+		this.queryData = this.queryData.bind(this);
+		this.switchOutput = this.switchOutput.bind(this);
 
 		this.cancelEdit = this.cancelEdit.bind(this);
 		this.startEdit = this.startEdit.bind(this);
+	}
+
+	switchOutput(new_output){
+		this.setState({output: new_output});
 	}
 
 	getTotal(){
@@ -50,7 +56,7 @@ class WindowPane extends React.Component {
 
 		if(data.length > 0){
 			let just_costs = data.map(item => math.floor(item.cost*100));
-			total = math.add(...just_costs) / 100;
+			total = math.add(0, ...just_costs) / 100;
 		}
 
 		return total;
@@ -76,12 +82,19 @@ class WindowPane extends React.Component {
 		return <span>{title}{name}</span>;
 	}
 
+	queryData(){
+		return this.props.db.GetByQuery(this.state.query);
+	}
+
 	findView(){
 		let response;
 
 		switch(this.state.output){
 			case "list":
-				response = <TransactionTable data={this.props.db.GetByQuery(this.state.query)} />;
+				response = <TransactionTable data={this.queryData()} />;
+				break;
+			case "categories":
+				response = <CategoryTable data={this.queryData()} />;
 				break;
 			default:
 				response = <div>Whoops, look like your config is a bit goofy!</div>;
@@ -132,14 +145,19 @@ class WindowPane extends React.Component {
 						start={this.state.query.between.start}
 						end={this.state.query.between.end}
 						name={this.state.query.name}
+						include_categories={this.state.query.include_categories}
+						exclude_categories={this.state.query.exclude_categories}
 						updateQuery={this.updateQuery}
 						cancelEdit={this.cancelEdit}
 						editing={this.state.editing}
+						data={this.props.db.GetAll()}
+						output={this.state.output}
+						switchOutput={this.switchOutput}
 					/>
 				</UnmountClosed>
 				<div className="h4 d-flex justify-content-between align-items-center">
 					<span>{this.getTitle()} <span style={{"fontSize": ".6em", "opacity": ".6"}} title="Filtered Total">(${this.getTotal()})</span></span>
-					{!this.state.editing ? <span><Edit className="feather hover-okay" onClick={this.startEdit} /></span> : '' }
+					{!this.state.editing ? <span><Edit className="feather hover-okay" onClick={this.startEdit} style={{display: "inherit"}} /></span> : '' }
 				</div>
 				{this.findView()}
 			</div>
